@@ -33,16 +33,8 @@ export class HeaderComponent {
       return;
     }
 
-    const fragment = fragmentOrPath;
-    setTimeout(() => {
-      const el = document.getElementById(fragment);
-      if (!el) return;
-      const headerEl = document.querySelector('header') as HTMLElement | null;
-      const headerOffset = headerEl ? headerEl.offsetHeight : 64;
-      const top = el.getBoundingClientRect().top + window.scrollY - headerOffset;
-      window.scrollTo({ top, behavior: 'smooth' });
-      try { history.replaceState(null, '', `#${fragment}`); } catch { /* ignore */ }
-    }, 80);
+    // Navigate to home with the fragment; anchorScrolling handles the scroll
+    setTimeout(() => this.router.navigate(['/'], { fragment: fragmentOrPath }), 80);
   }
 
   @HostListener('document:click', ['$event'])
