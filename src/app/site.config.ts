@@ -182,7 +182,13 @@ export const SITE_CONFIG: SiteConfig = {
           name: 'Main (historical)',
           ip: null,
           status: 'Check posts',
-          notes: 'Server IPs and details were historically posted on the old site — update this entry with current IP addresses.',
+          notes: 'Server IPs and details were historically posted on the old site — see archive: https://www.ironraptor.com/category/gaming/minecraft/. Update this entry with current IP addresses.',
+        },
+        {
+          name: 'Hub (Bungee)',
+          ip: null,
+          status: 'Legacy',
+          notes: 'Bungee Cord proxy was historically used; see https://www.ironraptor.com/bungee-cord-now-being-used-for-minecraft-servers/ for context.',
         },
       ],
       rules: [

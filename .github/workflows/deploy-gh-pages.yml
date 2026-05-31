@@ -36,3 +36,4 @@ jobs:
           folder: dist/iron-raptor/browser
           branch: gh-pages
           clean: true
+          cname: www.ironraptor.com
