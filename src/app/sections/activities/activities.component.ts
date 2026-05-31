@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { SITE_CONFIG } from '../../site.config';
 
 @Component({
@@ -10,4 +10,9 @@ import { SITE_CONFIG } from '../../site.config';
 })
 export class ActivitiesComponent {
   config = SITE_CONFIG;
+  openCard = signal<string | null>(null);
+
+  toggleCard(title: string): void {
+    this.openCard.set(this.openCard() === title ? null : title);
+  }
 }

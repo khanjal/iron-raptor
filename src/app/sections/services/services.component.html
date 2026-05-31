@@ -8,24 +8,105 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       @for (item of config.gaming.items; track item.title) {
-        <div class="card group hover:shadow-glow hover:-translate-y-1 transition-all duration-300">
-          <div class="text-5xl mb-5 group-hover:scale-110 transition-transform duration-300 select-none">
-            {{ item.icon }}
-          </div>
-          <h3 class="text-xl font-bold mb-3 text-text-primary">{{ item.title }}</h3>
-          <p class="text-text-secondary leading-relaxed">{{ item.description }}</p>
+        <div class="card group transition-all duration-300"
+             [class.shadow-glow]="openCard() === item.title"
+             [class.-translate-y-1]="openCard() !== item.title">
+          <!-- Card header (always visible) -->
+          <button type="button"
+                  class="w-full text-left cursor-pointer"
+                  (click)="toggleCard(item.title)"
+                  [attr.aria-expanded]="openCard() === item.title">
+            <div class="text-5xl mb-5 group-hover:scale-110 transition-transform duration-300 select-none">
+              {{ item.icon }}
+            </div>
+            <div class="flex items-center justify-between gap-2">
+              <h3 class="text-xl font-bold text-text-primary">{{ item.title }}</h3>
+              @if (item.details || item.rules) {
+                <svg class="w-4 h-4 text-accent/70 flex-shrink-0 transition-transform duration-200"
+                     [class.rotate-180]="openCard() === item.title"
+                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+              }
+            </div>
+            <p class="text-text-secondary leading-relaxed mt-3">{{ item.description }}</p>
+          </button>
+
+          <!-- Expanded detail panel -->
+          @if (openCard() === item.title) {
+            <div class="mt-5 pt-5 border-t border-soft">
+
+              @if (item.details && item.details.length) {
+                <dl class="space-y-2 mb-4">
+                  @for (d of item.details; track d.label) {
+                    <div class="flex flex-col sm:flex-row sm:gap-2">
+                      <dt class="font-semibold text-text-primary text-sm min-w-[8rem]">{{ d.label }}</dt>
+                      <dd class="text-text-secondary text-sm">{{ d.value }}</dd>
+                    </div>
+                  }
+                </dl>
+              }
+
+              @if (item.rules && item.rules.length) {
+                <div>
+                  <p class="font-semibold text-text-primary text-sm mb-2">Rules</p>
+                  <ul class="list-disc list-inside space-y-1">
+                    @for (rule of item.rules; track rule) {
+                      <li class="text-text-secondary text-sm">{{ rule }}</li>
+                    }
+                  </ul>
+                </div>
+              }
+
+              @if (item.links && item.links.length) {
+                <div class="mt-4 flex flex-wrap gap-2">
+                  @for (link of item.links; track link.label) {
+                    <a [href]="link.url" target="_blank" rel="noopener noreferrer"
+                       class="btn btn-secondary text-sm py-1 px-3">
+                      {{ link.label }}
+                    </a>
+                  }
+                </div>
+              }
+
+            </div>
+          }
         </div>
       }
     </div>
 
-    @if (config.gaming.streamsUrl) {
+    <!-- Streamers list -->
+    @if (config.gaming.streamers.length) {
+      <div class="mt-16">
+        <h3 class="text-center text-xl font-bold text-text-primary mb-8">Member Streams</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          @for (streamer of config.gaming.streamers; track streamer.name) {
+            <a [href]="streamer.url" target="_blank" rel="noopener noreferrer"
+               class="card flex items-center gap-4 hover:shadow-glow transition-all duration-300 no-underline">
+              <!-- Twitch logo mark -->
+              <svg class="w-8 h-8 text-purple-500 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M2.149 0l-1.612 4.319v16.683h5.731v3h3.224l2.997-3h4.836l6.475-6.475v-14.527h-21.651zm19.651 13.335l-3.464 3.464h-5.657l-2.997 3v-3h-4.731v-15.799h16.849v12.335zm-3.464-6.149v5.321h-2v-5.321h2zm-5.321 0v5.321h-2v-5.321h2z"/>
+              </svg>
+              <div>
+                <p class="font-bold text-text-primary">{{ streamer.name }}</p>
+                @if (streamer.description) {
+                  <p class="text-text-secondary text-sm">{{ streamer.description }}</p>
+                }
+              </div>
+            </a>
+          }
+        </div>
+      </div>
+    }
+
+    @if (config.gaming.streamsGroupUrl) {
       <div class="text-center mt-12">
-        <a [href]="config.gaming.streamsUrl" target="_blank" rel="noopener noreferrer"
+        <a [href]="config.gaming.streamsGroupUrl" target="_blank" rel="noopener noreferrer"
            class="btn btn-primary inline-flex items-center gap-2">
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
             <path d="M2.149 0l-1.612 4.319v16.683h5.731v3h3.224l2.997-3h4.836l6.475-6.475v-14.527h-21.651zm19.651 13.335l-3.464 3.464h-5.657l-2.997 3v-3h-4.731v-15.799h16.849v12.335zm-3.464-6.149v5.321h-2v-5.321h2zm-5.321 0v5.321h-2v-5.321h2z"/>
           </svg>
-          {{ config.gaming.streamsLabel || 'Watch Us Live' }}
+          {{ config.gaming.streamsLabel || 'View All Streams' }}
         </a>
       </div>
     }

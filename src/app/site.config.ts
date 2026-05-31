@@ -21,16 +21,31 @@ export interface Page {
   paragraphs: string[];
 }
 
+export interface ServiceDetail {
+  label: string;
+  value: string;
+}
+
 export interface Service {
   icon: string;
   title: string;
   description: string;
+  details?: ServiceDetail[];  // key/value facts shown in expanded panel
+  rules?: string[];           // bullet list shown in expanded panel
+  links?: { label: string; url: string }[];
 }
 
 export interface Activity {
   icon: string;
   title: string;
   description: string;
+  details?: string[];         // extra bullet points shown in expanded panel
+}
+
+export interface Streamer {
+  name: string;
+  url: string;               // full Twitch/YouTube/etc. URL
+  description?: string;
 }
 
 export interface Highlight {
@@ -49,10 +64,11 @@ export interface Testimonial {
 export interface SocialLinks {
   email: string | null;
   phone: string | null;
-  linkedin: string | null;   // Full URL  e.g. 'https://linkedin.com/company/acme'
-  github: string | null;     // Full URL  e.g. 'https://github.com/acme'
-  instagram: string | null;  // Full URL  e.g. 'https://instagram.com/acme'
-  facebook: string | null;   // Full URL  e.g. 'https://facebook.com/acme'
+  linkedin: string | null;
+  github: string | null;
+  instagram: string | null;
+  facebook: string | null;
+  steam: string | null;      // Full URL  e.g. 'https://steamcommunity.com/groups/ironraptor'
 }
 
 export interface InfoSection {
@@ -93,7 +109,8 @@ export interface SiteConfig {
     heading: string;
     subheading: string;
     items: Service[];
-    streamsUrl: string | null;  // link to streaming group/channel
+    streamers: Streamer[];
+    streamsGroupUrl: string | null;  // link to a stream group page
     streamsLabel: string | null;
   };
   activities: {
@@ -150,11 +167,12 @@ export const SITE_CONFIG: SiteConfig = {
         { label: 'Laser Tag',   icon: '🔫' },
         { label: 'Airsoft',     icon: '🎯' },
         { label: 'Geocaching',  icon: '🗺️' },
+        { label: 'Bicycling',   icon: '🚴' },
       ],
     },
     {
       label: 'Streams',
-      externalUrl: 'https://www.twitch.tv/ironraptor', // update to your stream URL
+      externalUrl: 'https://www.twitch.tv/team/ironraptor', // update if you have a Twitch team page
     },
     { label: 'About', fragment: 'about' },
   ],
@@ -166,7 +184,8 @@ export const SITE_CONFIG: SiteConfig = {
     linkedin:  null,
     github:    null,
     instagram: null,
-    facebook:  'https://www.facebook.com/pages/Iron-Raptor/289506364491998',
+    facebook:  null,
+    steam:     'https://steamcommunity.com/groups/ironraptor',
   },
 
   // ── Hero section ───────────────────────────────────────────────────────────
@@ -181,25 +200,48 @@ export const SITE_CONFIG: SiteConfig = {
 
   // ── Gaming section ─────────────────────────────────────────────────────────
   gaming: {
-    heading:      'Gaming',
-    subheading:   'What we play',
-    streamsUrl:   'https://www.twitch.tv/ironraptor', // update to your stream URL
-    streamsLabel: 'Watch Us Live',
+    heading:        'Gaming',
+    subheading:     'What we play',
+    streamsGroupUrl: null, // set to a URL when a stream group page exists
+    streamsLabel:   'Streams',
+    streamers: [
+      // Add members who stream here:
+      // { name: 'KhanJal', url: 'https://www.twitch.tv/khanjal', description: 'Minecraft & variety' },
+    ],
     items: [
       {
         icon:        '⛏️',
         title:       'Minecraft',
         description: 'Our longest-running home. Community servers, contraptions, and countless nights keeping the lights on.',
+        details: [
+          { label: 'Server software', value: 'Bukkit / Paper (historical), BungeeCord hub' },
+          { label: 'Last known version', value: '1.11 (upgraded Nov 2016)' },
+          { label: 'Server IP', value: 'TBD — update in site.config.ts' },
+          { label: 'Notable features', value: 'Land claims, economy (credits), Build of the Month contests' },
+        ],
+        rules: [
+          'No griefing or stealing.',
+          'Be respectful to all players.',
+          'No cheating, exploits, or client-side hacks.',
+          'Staff decisions are final.',
+        ],
       },
       {
         icon:        '🎮',
         title:       'PC Gaming',
         description: 'From Guild Wars 2 and DayZ to whatever drops next — we\'re always down for the next adventure.',
+        details: [
+          { label: 'Past titles', value: 'Guild Wars 2, DayZ, Tekkit, Diablo 3, various FPS' },
+          { label: 'Find us', value: 'Steam group — link in the footer' },
+        ],
       },
       {
         icon:        '♟️',
         title:       'Board Games',
         description: 'Tabletop nights and game-day sessions rounding out the mix.',
+        details: [
+          { label: 'Format', value: 'Casual in-person sessions' },
+        ],
       },
     ],
   },
@@ -213,16 +255,38 @@ export const SITE_CONFIG: SiteConfig = {
         icon:        '🔫',
         title:       'Laser Tag',
         description: 'Team-based laser tag sessions and competitive events — all the fun, none of the bruises.',
+        details: [
+          'Indoor & outdoor arena sessions',
+          'Team vs. team competitive format',
+        ],
       },
       {
         icon:        '🎯',
         title:       'Airsoft',
         description: 'We organized field days and team events. While no longer active on the field, the memories are locked in.',
+        details: [
+          'Ran organized field days and scenario events',
+          'No longer active — but fond memories remain',
+        ],
       },
       {
         icon:        '🗺️',
         title:       'Geocaching',
         description: 'Lightweight hikes, puzzle caches, and community meetups — a great excuse to get outside.',
+        details: [
+          'Traditional, multi-stage, and puzzle cache types',
+          'Community meetup events combined with caching',
+          'Profile: update link in site.config.ts',
+        ],
+      },
+      {
+        icon:        '🚴',
+        title:       'Bicycling',
+        description: 'Group rides ranging from casual neighborhood loops to longer trail adventures.',
+        details: [
+          'Casual and trail rides',
+          'Open to all fitness levels',
+        ],
       },
     ],
   },
