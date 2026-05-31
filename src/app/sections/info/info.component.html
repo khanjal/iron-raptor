@@ -1,0 +1,66 @@
+<section id="info" class="section">
+  <div class="container-custom">
+
+    <div class="text-center mb-8">
+      <span class="block font-mono text-accent/70 text-sm tracking-widest uppercase">Info</span>
+      <h2 class="section-title mt-3">{{ config.info?.heading }}</h2>
+    </div>
+
+    @if (config.info) {
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <h3 class="text-xl font-bold mb-3">Minecraft Servers</h3>
+          <p class="mb-4">Connection details and community server notes — edit <strong>src/app/site.config.ts</strong> to update IPs.</p>
+
+          <ul class="space-y-3">
+            @for (server of config.info.minecraft.servers; track server.name) {
+              <li class="card">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <div class="text-sm text-text-muted">{{ server.name }}</div>
+                    <div class="text-text-primary font-mono mt-1">{{ server.ip || 'TBD' }}</div>
+                    @if (server.notes) {
+                      <div class="text-text-secondary text-sm mt-2">{{ server.notes }}</div>
+                    }
+                  </div>
+                  <div class="text-sm text-accent">{{ server.status }}</div>
+                </div>
+              </li>
+            }
+          </ul>
+
+          <h4 class="mt-6 font-semibold">Server Rules</h4>
+          <ul class="list-disc pl-5 mt-2 text-text-secondary">
+            @for (rule of config.info.minecraft.rules; track rule) {
+              <li>{{ rule }}</li>
+            }
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="text-xl font-bold mb-3">Twitch & Streaming</h3>
+          <p class="mb-4">Follow for live streams and community events.</p>
+
+          @if (config.info.twitch.url) {
+            <a [href]="config.info.twitch.url" target="_blank" rel="noopener noreferrer" class="btn btn-primary inline-block">
+              Visit {{ config.info.twitch.channel || 'Twitch' }}
+            </a>
+          } @else {
+            <div class="card">
+              <p class="text-text-secondary">No channel linked yet. Connect on Facebook for updates or edit <strong>src/app/site.config.ts</strong> to add your Twitch channel.</p>
+            </div>
+          }
+
+          @if (config.info.twitch.schedule) {
+            <div class="mt-4 text-text-secondary"><strong>Typical schedule:</strong> {{ config.info.twitch.schedule }}</div>
+          }
+        </div>
+      </div>
+    } @else {
+      <div class="card">
+        <p class="text-text-secondary">No info configured. Edit <strong>src/app/site.config.ts</strong> to add Minecraft and Twitch details.</p>
+      </div>
+    }
+
+  </div>
+</section>
