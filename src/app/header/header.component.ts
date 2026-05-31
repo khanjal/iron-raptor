@@ -28,7 +28,8 @@ export class HeaderComponent {
 
     // If this looks like a route path, navigate; otherwise scroll to an ID on the page
     if (fragmentOrPath && fragmentOrPath.startsWith('/')) {
-      setTimeout(() => this.router.navigate([fragmentOrPath]), 80);
+      // Use navigateByUrl for absolute path strings to avoid incorrect segment parsing
+      setTimeout(() => this.router.navigateByUrl(fragmentOrPath), 80);
       return;
     }
 
