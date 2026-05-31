@@ -6,6 +6,13 @@
 export interface NavItem {
   label: string;
   fragment: string;
+  path?: string; // Optional route path (e.g. '/pages/minecraft')
+}
+
+export interface Page {
+  slug: string;
+  title: string;
+  paragraphs: string[];
 }
 
 export interface Service {
@@ -78,6 +85,7 @@ export interface SiteConfig {
     imagePath: string | null; // Path inside public/, e.g. 'about.jpg'
   };
   info?: InfoSection;
+  pages?: Page[];
   testimonials: {
     heading: string;
     items: Testimonial[];
@@ -113,10 +121,11 @@ export const SITE_CONFIG: SiteConfig = {
 
   // ── Navigation (fragment maps to a section id on the home page) ───────────
   nav: [
-    { label: 'Games',   fragment: 'services' },
-    { label: 'Info',    fragment: 'info'     },
-    { label: 'About',   fragment: 'about'    },
-    { label: 'Connect', fragment: 'contact'  },
+    { label: 'Games',      fragment: 'services' },
+    { label: 'Minecraft',  fragment: 'info', path: '/pages/minecraft' },
+    { label: 'Geocaching', fragment: 'about', path: '/pages/geocaching' },
+    { label: 'Gaming',     fragment: 'services', path: '/pages/gaming' },
+    { label: 'About',      fragment: 'about' },
   ],
 
   // ── Social / contact ───────────────────────────────────────────────────────
@@ -203,6 +212,34 @@ export const SITE_CONFIG: SiteConfig = {
       schedule: 'Occasional community streams — follow Facebook for live announcements.',
     },
   },
+
+  // ── Additional standalone pages (route: /pages/:slug) ───────────────────
+  pages: [
+    {
+      slug: 'minecraft',
+      title: 'Minecraft',
+      paragraphs: [
+        'Iron Raptor has a long history with Minecraft — community servers, Bungee hub setups, and many plugin experiments over the years. The canonical server details and archive posts can be found on the legacy site (https://www.ironraptor.com/category/gaming/minecraft/).',
+        'See the Info page for current connection notes and streaming updates. If you have a current server IP to publish, add it to the `info.minecraft.servers` array in `src/app/site.config.ts`.',
+      ],
+    },
+    {
+      slug: 'geocaching',
+      title: 'Geocaching',
+      paragraphs: [
+        'We occasionally ran geocaching outings as a group — lightweight hikes, puzzle caches, and community meetups. This page is a place to record common meeting spots, hints, and past event notes.',
+        'If you want to add upcoming geocaching events, add them here or open an issue in the repository so we can coordinate dates.',
+      ],
+    },
+    {
+      slug: 'gaming',
+      title: 'Gaming',
+      paragraphs: [
+        'Gaming nights include Minecraft, Guild Wars 2, DayZ, and other multiplayer sessions. We also documented airsoft events and team days in the past.',
+        'Check the Services section for a quick list of games and activities. To add a new game or project, update the `services` array in `src/app/site.config.ts`.',
+      ],
+    },
+  ],
 
   // ── Testimonials — empty array hides the section ───────────────────────────
   testimonials: {

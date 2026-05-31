@@ -1,0 +1,20 @@
+<section class="section">
+  <div class="container-custom">
+    @if (!page) {
+      <div class="card">
+        <h3 class="text-xl font-bold">Page not found</h3>
+        <p class="text-text-secondary">Return to the <a routerLink="/">home</a>.</p>
+      </div>
+    } @else {
+      <div class="mb-6">
+        <h1 class="text-3xl font-bold">{{ page.title }}</h1>
+        <div class="mt-4 text-text-secondary">
+          @for (p of page.paragraphs; track p) {
+            <p class="mb-3">{{ p }}</p>
+          }
+        </div>
+      </div>
+      <a routerLink="/" class="btn btn-ghost">Back home</a>
+    }
+  </div>
+</section>
