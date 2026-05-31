@@ -3,10 +3,16 @@
 // Edit this file to customize your entire site. All content is driven from here.
 // =============================================================================
 
+export interface NavDropdownItem {
+  label: string;
+  icon?: string;
+}
+
 export interface NavItem {
   label: string;
-  fragment: string;
-  path?: string; // Optional route path (e.g. '/pages/minecraft')
+  fragment?: string;       // scroll to this id on the home page
+  externalUrl?: string;    // external link (opens in new tab)
+  children?: NavDropdownItem[]; // dropdown sub-items (decorative / labels)
 }
 
 export interface Page {
@@ -16,7 +22,13 @@ export interface Page {
 }
 
 export interface Service {
-  icon: string;     // Any emoji, or swap for an SVG path in the template
+  icon: string;
+  title: string;
+  description: string;
+}
+
+export interface Activity {
+  icon: string;
   title: string;
   description: string;
 }
@@ -77,35 +89,36 @@ export interface SiteConfig {
     secondaryCtaLabel: string | null;
     secondaryCtaFragment: string | null;
   };
-  services: Service[];
+  gaming: {
+    heading: string;
+    subheading: string;
+    items: Service[];
+    streamsUrl: string | null;  // link to streaming group/channel
+    streamsLabel: string | null;
+  };
+  activities: {
+    heading: string;
+    subheading: string;
+    items: Activity[];
+  };
   about: {
     heading: string;
     paragraphs: string[];
     highlights: Highlight[];
-    imagePath: string | null; // Path inside public/, e.g. 'about.jpg'
+    imagePath: string | null;
   };
+  // legacy field kept so existing template refs don't break during transition
+  services: Service[];
   info?: InfoSection;
   pages?: Page[];
   testimonials: {
     heading: string;
     items: Testimonial[];
-    /**
-     * Link to your Google Business Profile reviews page.
-     * e.g. 'https://g.page/r/YOUR_PLACE_ID/review'
-     * Set to null to hide the "See all reviews" button.
-     */
     googleReviewsUrl: string | null;
   };
   contact: {
     heading: string;
     subheading: string;
-    /**
-     * Formspree form ID for serverless email delivery.
-     * 1. Sign up free at https://formspree.io
-     * 2. Create a new form and copy the ID (e.g. 'xpwzdzzl')
-     * 3. Paste it here.
-     * If null, clicking Submit opens the visitor's mail client instead.
-     */
     formspreeId: string | null;
   };
 }
@@ -119,13 +132,31 @@ export const SITE_CONFIG: SiteConfig = {
     year:    2008,
   },
 
-  // ── Navigation (fragment maps to a section id on the home page) ───────────
+  // ── Navigation ─────────────────────────────────────────────────────────────
   nav: [
-    { label: 'Games',      fragment: 'services' },
-    { label: 'Minecraft',  fragment: 'info', path: '/pages/minecraft' },
-    { label: 'Geocaching', fragment: 'about', path: '/pages/geocaching' },
-    { label: 'Gaming',     fragment: 'services', path: '/pages/gaming' },
-    { label: 'About',      fragment: 'about' },
+    {
+      label: 'Gaming',
+      fragment: 'gaming',
+      children: [
+        { label: 'Minecraft',  icon: '⛏️' },
+        { label: 'PC Gaming',  icon: '🎮' },
+        { label: 'Board Games', icon: '♟️' },
+      ],
+    },
+    {
+      label: 'Activities',
+      fragment: 'activities',
+      children: [
+        { label: 'Laser Tag',   icon: '🔫' },
+        { label: 'Airsoft',     icon: '🎯' },
+        { label: 'Geocaching',  icon: '🗺️' },
+      ],
+    },
+    {
+      label: 'Streams',
+      externalUrl: 'https://www.twitch.tv/ironraptor', // update to your stream URL
+    },
+    { label: 'About', fragment: 'about' },
   ],
 
   // ── Social / contact ───────────────────────────────────────────────────────
@@ -142,30 +173,59 @@ export const SITE_CONFIG: SiteConfig = {
   hero: {
     headline:             'Iron Raptor',
     subheadline:          'A gaming community built around Minecraft, competitive shooters, and more — always clever.',
-    ctaLabel:             'See Our Games',
-    ctaFragment:          'services',
-    secondaryCtaLabel:    'About Us',
-    secondaryCtaFragment: 'about',
+    ctaLabel:             'Our Games',
+    ctaFragment:          'gaming',
+    secondaryCtaLabel:    'Activities',
+    secondaryCtaFragment: 'activities',
   },
 
-  // ── Games section ──────────────────────────────────────────────────────────
-  services: [
-    {
-      icon:        '⛏️',
-      title:       'Minecraft',
-      description: 'Our longest-running home. Community servers, contraptions, and countless nights keeping the lights on.',
-    },
-    {
-      icon:        '🎯',
-      title:       'Airsoft',
-      description: 'We organized field days and team events. While no longer active on the field, the memories are locked in.',
-    },
-    {
-      icon:        '🎮',
-      title:       'PC Gaming',
-      description: 'From Guild Wars 2 and DayZ to whatever drops next — we\'re always down for the next adventure.',
-    },
-  ],
+  // ── Gaming section ─────────────────────────────────────────────────────────
+  gaming: {
+    heading:      'Gaming',
+    subheading:   'What we play',
+    streamsUrl:   'https://www.twitch.tv/ironraptor', // update to your stream URL
+    streamsLabel: 'Watch Us Live',
+    items: [
+      {
+        icon:        '⛏️',
+        title:       'Minecraft',
+        description: 'Our longest-running home. Community servers, contraptions, and countless nights keeping the lights on.',
+      },
+      {
+        icon:        '🎮',
+        title:       'PC Gaming',
+        description: 'From Guild Wars 2 and DayZ to whatever drops next — we\'re always down for the next adventure.',
+      },
+      {
+        icon:        '♟️',
+        title:       'Board Games',
+        description: 'Tabletop nights and game-day sessions rounding out the mix.',
+      },
+    ],
+  },
+
+  // ── Activities section ─────────────────────────────────────────────────────
+  activities: {
+    heading:    'Activities',
+    subheading: 'Beyond the screen',
+    items: [
+      {
+        icon:        '🔫',
+        title:       'Laser Tag',
+        description: 'Team-based laser tag sessions and competitive events — all the fun, none of the bruises.',
+      },
+      {
+        icon:        '🎯',
+        title:       'Airsoft',
+        description: 'We organized field days and team events. While no longer active on the field, the memories are locked in.',
+      },
+      {
+        icon:        '🗺️',
+        title:       'Geocaching',
+        description: 'Lightweight hikes, puzzle caches, and community meetups — a great excuse to get outside.',
+      },
+    ],
+  },
 
   // ── About section ──────────────────────────────────────────────────────────
   about: {
@@ -175,73 +235,17 @@ export const SITE_CONFIG: SiteConfig = {
       'Even if the servers are quiet now and the airsoft gear sits in the closet, the community endures through shared stories, Steam friends lists, and the occasional reunion session.',
     ],
     highlights: [
-      { value: '2008',        label: 'Founded'                    },
-      { value: 'Early 2000s', label: 'Playing Together Since'     },
-      { value: '10+',         label: 'Games Played'               },
+      { value: '2008',        label: 'Founded'                },
+      { value: 'Early 2000s', label: 'Playing Together Since' },
+      { value: '10+',         label: 'Games Played'           },
     ],
     imagePath: null,
   },
 
-  // ── Info section (Minecraft servers, Twitch) ──────────────────────────────
-  info: {
-    heading: 'Minecraft & Streams',
-    minecraft: {
-      servers: [
-        {
-          name: 'Main (historical)',
-          ip: null,
-          status: 'Check posts',
-          notes: 'Server IPs and details were historically posted on the old site — see archive: https://www.ironraptor.com/category/gaming/minecraft/. Update this entry with current IP addresses.',
-        },
-        {
-          name: 'Hub (Bungee)',
-          ip: null,
-          status: 'Legacy',
-          notes: 'Bungee Cord proxy was historically used; see https://www.ironraptor.com/bungee-cord-now-being-used-for-minecraft-servers/ for context.',
-        },
-      ],
-      rules: [
-        'No griefing or stealing.',
-        'Be respectful to other players.',
-        'No cheating, exploits, or client-side hacks.',
-      ],
-    },
-    twitch: {
-      channel: null,
-      url: null,
-      schedule: 'Occasional community streams — follow Facebook for live announcements.',
-    },
-  },
+  // ── Legacy: kept for any remaining template refs ───────────────────────────
+  services: [],
 
-  // ── Additional standalone pages (route: /pages/:slug) ───────────────────
-  pages: [
-    {
-      slug: 'minecraft',
-      title: 'Minecraft',
-      paragraphs: [
-        'Iron Raptor has a long history with Minecraft — community servers, Bungee hub setups, and many plugin experiments over the years. The canonical server details and archive posts can be found on the legacy site (https://www.ironraptor.com/category/gaming/minecraft/).',
-        'See the Info page for current connection notes and streaming updates. If you have a current server IP to publish, add it to the `info.minecraft.servers` array in `src/app/site.config.ts`.',
-      ],
-    },
-    {
-      slug: 'geocaching',
-      title: 'Geocaching',
-      paragraphs: [
-        'We occasionally ran geocaching outings as a group — lightweight hikes, puzzle caches, and community meetups. This page is a place to record common meeting spots, hints, and past event notes.',
-        'If you want to add upcoming geocaching events, add them here or open an issue in the repository so we can coordinate dates.',
-      ],
-    },
-    {
-      slug: 'gaming',
-      title: 'Gaming',
-      paragraphs: [
-        'Gaming nights include Minecraft, Guild Wars 2, DayZ, and other multiplayer sessions. We also documented airsoft events and team days in the past.',
-        'Check the Services section for a quick list of games and activities. To add a new game or project, update the `services` array in `src/app/site.config.ts`.',
-      ],
-    },
-  ],
-
-  // ── Testimonials — empty array hides the section ───────────────────────────
+  // ── Testimonials — empty array hides the section ──────────────────────────
   testimonials: {
     heading:          'What the Group Says',
     googleReviewsUrl: null,

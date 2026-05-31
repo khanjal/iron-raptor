@@ -1,0 +1,22 @@
+<section id="activities" class="section">
+  <div class="container-custom">
+
+    <div class="text-center mb-16">
+      <span class="block font-mono text-accent/70 text-sm tracking-widest uppercase">{{ config.activities.subheading }}</span>
+      <h2 class="section-title mt-3">{{ config.activities.heading }}</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      @for (item of config.activities.items; track item.title) {
+        <div class="card group hover:shadow-glow hover:-translate-y-1 transition-all duration-300">
+          <div class="text-5xl mb-5 group-hover:scale-110 transition-transform duration-300 select-none">
+            {{ item.icon }}
+          </div>
+          <h3 class="text-xl font-bold mb-3 text-text-primary">{{ item.title }}</h3>
+          <p class="text-text-secondary leading-relaxed">{{ item.description }}</p>
+        </div>
+      }
+    </div>
+
+  </div>
+</section>

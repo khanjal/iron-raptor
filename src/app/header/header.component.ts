@@ -1,18 +1,19 @@
-import { Component, HostListener, inject } from '@angular/core';
+import { Component, HostListener, inject, signal } from '@angular/core';
 import { SITE_CONFIG } from '../site.config';
 import { ThemeService } from '../shared/services/theme.service';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink],
+  imports: [],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
   config = SITE_CONFIG;
   mobileOpen = false;
+  openDropdown = signal<string | null>(null);
 
   theme = inject(ThemeService);
   private router = inject(Router);
@@ -21,26 +22,29 @@ export class HeaderComponent {
     this.mobileOpen = !this.mobileOpen;
   }
 
-  mobileNavigate(event: Event, fragmentOrPath: string) {
+  toggleDropdown(event: Event, label: string) {
+    event.stopPropagation();
+    this.openDropdown.set(this.openDropdown() === label ? null : label);
+  }
+
+  navClick(event: Event, item: { fragment?: string; externalUrl?: string }) {
     event.preventDefault();
     event.stopPropagation();
     this.mobileOpen = false;
+    this.openDropdown.set(null);
 
-    // If this looks like a route path, navigate; otherwise scroll to an ID on the page
-    if (fragmentOrPath && fragmentOrPath.startsWith('/')) {
-      // Use navigateByUrl for absolute path strings to avoid incorrect segment parsing
-      setTimeout(() => this.router.navigateByUrl(fragmentOrPath), 80);
+    if (item.externalUrl) {
+      window.open(item.externalUrl, '_blank', 'noopener,noreferrer');
       return;
     }
-
-    // Navigate to home with the fragment; anchorScrolling handles the scroll
-    setTimeout(() => this.router.navigate(['/'], { fragment: fragmentOrPath }), 80);
+    if (item.fragment) {
+      this.router.navigate(['/'], { fragment: item.fragment });
+    }
   }
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(_event: Event) {
-    if (this.mobileOpen) {
-      this.mobileOpen = false;
-    }
+    if (this.mobileOpen) this.mobileOpen = false;
+    if (this.openDropdown()) this.openDropdown.set(null);
   }
 }
