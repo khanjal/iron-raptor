@@ -8,18 +8,18 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss',
+  styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
   config = SITE_CONFIG;
-  mobileOpen = false;
+  mobileOpen = signal(false);
   openDropdown = signal<string | null>(null);
 
   theme = inject(ThemeService);
   private router = inject(Router);
 
   toggleMobile() {
-    this.mobileOpen = !this.mobileOpen;
+    this.mobileOpen.set(!this.mobileOpen());
   }
 
   toggleDropdown(event: Event, label: string) {
@@ -27,14 +27,18 @@ export class HeaderComponent {
     this.openDropdown.set(this.openDropdown() === label ? null : label);
   }
 
-  navClick(event: Event, item: { fragment?: string; externalUrl?: string }) {
+  navClick(event: Event, item: { fragment?: string; routerLink?: string; externalUrl?: string }) {
     event.preventDefault();
     event.stopPropagation();
-    this.mobileOpen = false;
+    this.mobileOpen.set(false);
     this.openDropdown.set(null);
 
     if (item.externalUrl) {
       window.open(item.externalUrl, '_blank', 'noopener,noreferrer');
+      return;
+    }
+    if (item.routerLink) {
+      this.router.navigate([item.routerLink]);
       return;
     }
     if (item.fragment) {
@@ -44,7 +48,7 @@ export class HeaderComponent {
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(_event: Event) {
-    if (this.mobileOpen) this.mobileOpen = false;
+    if (this.mobileOpen()) this.mobileOpen.set(false);
     if (this.openDropdown()) this.openDropdown.set(null);
   }
 }

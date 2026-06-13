@@ -32,16 +32,23 @@
                   </a>
                   <div class="border-t border-soft my-1"></div>
                   @for (child of item.children; track child.label) {
-                    <span class="flex items-center gap-2 px-4 py-2 text-sm text-text-secondary">
+                    <button (click)="navClick($event, item)"
+                            class="flex items-center gap-2 px-4 py-2 text-sm text-text-secondary hover:text-accent hover:bg-accent/5 w-full text-left transition-colors"
+                            type="button">
                       @if (child.icon) { <span>{{ child.icon }}</span> }
                       {{ child.label }}
-                    </span>
+                    </button>
                   }
                 </div>
               }
             } @else if (item.externalUrl) {
               <a [href]="item.externalUrl" target="_blank" rel="noopener noreferrer"
                  class="text-secondary hover:text-accent font-medium transition-colors">
+                {{ item.label }}
+              </a>
+            } @else if (item.routerLink) {
+              <a (click)="navClick($event, item)" href="#"
+                 class="text-secondary hover:text-accent font-medium transition-colors cursor-pointer">
                 {{ item.label }}
               </a>
             } @else {
@@ -111,10 +118,10 @@
 
         <button (click)="$event.stopPropagation(); toggleMobile()"
                 class="text-accent p-2"
-                [attr.aria-expanded]="mobileOpen"
+                [attr.aria-expanded]="mobileOpen()"
                 aria-label="Toggle menu"
                 type="button">
-          @if (!mobileOpen) {
+          @if (!mobileOpen()) {
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
             </svg>
@@ -128,7 +135,7 @@
     </div>
 
     <!-- Mobile menu panel -->
-    @if (mobileOpen) {
+    @if (mobileOpen()) {
       <div (click)="$event.stopPropagation()" class="md:hidden mt-4 border-t border-soft pt-4">
         <div class="flex flex-col gap-1">
           @for (item of config.nav; track item.label) {
@@ -149,15 +156,22 @@
                   All {{ item.label }}
                 </a>
                 @for (child of item.children; track child.label) {
-                  <span class="flex items-center gap-2 pl-6 py-1.5 text-sm text-text-muted">
+                  <button (click)="navClick($event, item)"
+                          class="flex items-center gap-2 pl-6 py-1.5 text-sm text-text-secondary hover:text-accent transition-colors w-full text-left"
+                          type="button">
                     @if (child.icon) { <span>{{ child.icon }}</span> }
                     {{ child.label }}
-                  </span>
+                  </button>
                 }
               }
             } @else if (item.externalUrl) {
               <a [href]="item.externalUrl" target="_blank" rel="noopener noreferrer"
                  class="px-2 py-2 text-secondary hover:text-accent transition-colors font-medium">
+                {{ item.label }}
+              </a>
+            } @else if (item.routerLink) {
+              <a (click)="navClick($event, item)" href="#"
+                 class="px-2 py-2 text-secondary hover:text-accent transition-colors font-medium cursor-pointer">
                 {{ item.label }}
               </a>
             } @else {

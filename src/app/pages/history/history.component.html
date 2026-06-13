@@ -1,0 +1,50 @@
+<section class="section">
+  <div class="container-custom max-w-3xl">
+
+    <!-- Page header -->
+    <div class="mb-14">
+      <span class="block font-mono text-accent/70 text-sm tracking-widest uppercase">Est. 2007</span>
+      <h1 class="section-title mt-3">The Iron Raptor Story</h1>
+      <p class="text-text-secondary mt-4 text-lg leading-relaxed">
+        Two crews. One battlefield. One community.
+      </p>
+    </div>
+
+    <!-- Timeline -->
+    <div class="relative">
+      <!-- Vertical line -->
+      <div class="absolute left-[18px] top-2 bottom-2 w-px bg-accent/20"></div>
+
+      <div class="space-y-10">
+        @for (entry of history; track entry.year) {
+          <div class="relative flex gap-6">
+            <!-- Dot -->
+            <div class="relative z-10 flex-shrink-0 w-9 h-9 rounded-full border-2 border-accent/40 bg-surface flex items-center justify-center shadow-glow-sm">
+              <div class="w-2 h-2 rounded-full bg-accent"></div>
+            </div>
+
+            <!-- Content card -->
+            <div class="card flex-1 pb-6">
+              <div class="flex flex-wrap items-center gap-3 mb-3">
+                <span class="font-mono text-accent text-sm font-semibold tracking-wide">{{ entry.year }}</span>
+                @if (entry.tags && entry.tags.length) {
+                  @for (tag of entry.tags; track tag) {
+                    <span class="text-xs px-2 py-0.5 rounded-full border border-accent/20 text-accent/70 font-mono">{{ tag }}</span>
+                  }
+                }
+              </div>
+              <h3 class="text-lg font-bold text-primary mb-2">{{ entry.title }}</h3>
+              <p class="text-text-secondary leading-relaxed">{{ entry.description }}</p>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Footer nav -->
+    <div class="mt-16 pt-8 border-t border-soft">
+      <a routerLink="/" class="btn btn-ghost">← Back home</a>
+    </div>
+
+  </div>
+</section>

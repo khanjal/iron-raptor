@@ -8,27 +8,42 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       @for (item of config.activities.items; track item.title) {
-        <div class="card group transition-all duration-300"
-             [class.shadow-glow]="openCard() === item.title"
-             [class.-translate-y-1]="openCard() !== item.title">
+        <div [id]="cardId(item.title)"
+             class="card group transition-all duration-300 scroll-mt-24"
+             [class.col-span-full]="openCard() === item.title"
+             [class.shadow-glow]="openCard() === item.title">
           <!-- Card header -->
           <button type="button"
                   class="w-full text-left cursor-pointer"
                   (click)="toggleCard(item.title)"
                   [attr.aria-expanded]="openCard() === item.title">
-            <div class="text-5xl mb-5 group-hover:scale-110 transition-transform duration-300 select-none">
-              {{ item.icon }}
-            </div>
-            <div class="flex items-center justify-between gap-2">
-              <h3 class="text-xl font-bold text-text-primary">{{ item.title }}</h3>
-              @if (item.details && item.details.length) {
-                <svg class="w-4 h-4 text-accent/70 flex-shrink-0 transition-transform duration-200"
-                     [class.rotate-180]="openCard() === item.title"
-                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                </svg>
-              }
-            </div>
+            @if (openCard() === item.title) {
+              <div class="flex items-center gap-4 mb-4">
+                <span class="text-4xl select-none">{{ item.icon }}</span>
+                <div class="flex items-center justify-between flex-1 gap-2">
+                  <h3 class="text-xl font-bold text-text-primary">{{ item.title }}</h3>
+                  @if (item.details && item.details.length) {
+                    <svg class="w-4 h-4 text-accent/70 flex-shrink-0 transition-transform duration-200 rotate-180"
+                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                  }
+                </div>
+              </div>
+            } @else {
+              <div class="text-5xl mb-5 group-hover:scale-110 transition-transform duration-300 select-none">
+                {{ item.icon }}
+              </div>
+              <div class="flex items-center justify-between gap-2">
+                <h3 class="text-xl font-bold text-text-primary">{{ item.title }}</h3>
+                @if (item.details && item.details.length) {
+                  <svg class="w-4 h-4 text-accent/70 flex-shrink-0 transition-transform duration-200"
+                       fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                  </svg>
+                }
+              </div>
+            }
             <p class="text-text-secondary leading-relaxed mt-3">{{ item.description }}</p>
           </button>
 

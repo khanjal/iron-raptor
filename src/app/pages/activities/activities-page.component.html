@@ -1,0 +1,64 @@
+<section class="section">
+  <div class="container-custom max-w-4xl">
+
+    <div class="mb-8">
+      <span class="block font-mono text-accent/70 text-sm tracking-widest uppercase">{{ config.activities.subheading }}</span>
+      <h1 class="section-title mt-3">{{ config.activities.heading }}</h1>
+      <p class="text-text-secondary mt-4">{{ config.activities.subheading }}</p>
+    </div>
+
+    <div class="space-y-8">
+      @for (item of activities; track item.title) {
+        <div class="card flex flex-col md:flex-row gap-6 items-start">
+          @if (item.imagePath) {
+            <div class="w-full md:w-48 flex-shrink-0">
+              <img src="{{ item.imagePath }}" alt="{{ item.title }}" class="w-full h-auto rounded" />
+            </div>
+          }
+          <div class="flex-1">
+            <div class="flex items-center justify-between gap-4">
+              <h3 class="text-xl font-bold">{{ item.title }}</h3>
+              @if (item.imagePath) {
+                <img src="{{ item.imagePath }}" alt="{{ item.title }}" class="w-12 h-12 rounded object-cover" />
+              } @else {
+                <div class="text-3xl select-none">{{ item.icon }}</div>
+              }
+            </div>
+            <p class="text-text-secondary mt-2">{{ item.description }}</p>
+            @if (item.details && item.details.length) {
+              <ul class="list-disc list-inside mt-3">
+                @for (d of item.details; track d) {
+                  <li class="text-text-secondary text-sm">{{ d }}</li>
+                }
+              </ul>
+            }
+            @if (item.title === 'Laser Tag') {
+              <div class="mt-4 flex gap-3">
+                <a [routerLink]="'/laser-games'" class="btn btn-primary">View game log</a>
+                @if (item.routerLink) {
+                  <button type="button" class="btn btn-outline" (click)="openInline(item)">{{ openInlineSlug() === slugFor(item) ? 'Hide' : 'Open page' }}</button>
+                } @else if (item.externalUrl) {
+                  <button type="button" class="btn btn-outline" (click)="openExternal(item.externalUrl)">Open page</button>
+                }
+              </div>
+            } @else if (item.routerLink) {
+              <div class="mt-4 flex gap-3">
+                <button type="button" class="btn btn-outline" (click)="openInline(item)">{{ openInlineSlug() === slugFor(item) ? 'Hide' : 'Open page' }}</button>
+              </div>
+            } @else if (item.externalUrl) {
+              <div class="mt-4 flex gap-3">
+                <button type="button" class="btn btn-outline" (click)="openExternal(item.externalUrl)">Open page</button>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    
+
+    <div class="mt-8 pt-8 border-t border-soft">
+      <a routerLink="/" class="btn btn-ghost">Back home</a>
+    </div>
+  </div>
+</section>

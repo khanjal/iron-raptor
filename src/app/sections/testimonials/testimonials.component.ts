@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { SITE_CONFIG } from '../../site.config';
+import { SITE_CONFIG } from 'app/site.config';
 
 @Component({
   selector: 'app-testimonials',
   standalone: true,
   templateUrl: './testimonials.component.html',
-  styleUrl: './testimonials.component.scss',
+  styleUrls: ['./testimonials.component.scss'],
 })
 export class TestimonialsComponent {
   config = SITE_CONFIG;
