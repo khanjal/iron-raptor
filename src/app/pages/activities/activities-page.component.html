@@ -50,6 +50,15 @@
                 <button type="button" class="btn btn-outline" (click)="openExternal(item.externalUrl)">Open page</button>
               </div>
             }
+            @if (openInlineSlug() === slugFor(item)) {
+              <div class="card mt-3 prose max-w-none">
+                @if (loadingInline()) {
+                  <p>Loading...</p>
+                } @else {
+                  <div [innerHTML]="inlineContent[slugFor(item)]"></div>
+                }
+              </div>
+            }
           </div>
         </div>
       }

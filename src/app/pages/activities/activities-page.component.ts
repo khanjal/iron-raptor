@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { SITE_CONFIG } from '../../site.config';
@@ -10,7 +10,7 @@ import { SITE_CONFIG } from '../../site.config';
   templateUrl: './activities-page.component.html',
   styleUrls: ['./activities-page.component.scss'],
 })
-export class ActivitiesPageComponent {
+export class ActivitiesPageComponent implements OnInit {
   config = SITE_CONFIG;
   activities = SITE_CONFIG.activities?.items ?? [];
   openInlineSlug = signal<string | null>(null);
@@ -49,5 +49,41 @@ export class ActivitiesPageComponent {
       }
     }
     this.openInlineSlug.set(slug);
+  }
+
+  ngOnInit(): void {
+    // Enrich activities items with parsed summaries (from src/assets/data/<slug>.json)
+    this.loadSummaries(this.activities);
+  }
+
+  private async loadSummaries(items: any[]) {
+    for (const item of items) {
+      try {
+        const slug = this.slugFor(item);
+        if (!slug) continue;
+        const res = await fetch(`/assets/data/${slug}.json`);
+        if (!res.ok) continue;
+        const data = await res.json();
+        if (data.summary && (!item.description || !item.description.trim())) item.description = data.summary;
+        if (data.images && data.images.length && !item.imagePath) {
+          item.imagePath = data.images.find((i: string) => i.startsWith('/assets')) || data.images[0];
+        }
+        if (data.sections && data.sections.length && (!item.details || item.details.length === 0)) {
+          item.details = data.sections.map((s: any) => s.heading ? `${s.heading}: ${s.text}` : s.text);
+        }
+        // Normalize image path to absolute form
+        if (item.imagePath) item.imagePath = this.normalizeImagePath(item.imagePath);
+      } catch (err) {
+        // ignore missing or parse errors
+      }
+    }
+  }
+
+  private normalizeImagePath(p: string | undefined): string | undefined {
+    if (!p) return p;
+    const s = p.trim();
+    if (s.startsWith('/') || /^https?:\/\//i.test(s) || s.startsWith('data:')) return s;
+    if (s.startsWith('assets/')) return '/' + s;
+    return s;
   }
 }
