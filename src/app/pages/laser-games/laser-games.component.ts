@@ -18,16 +18,17 @@ const stripTags = (s: string): string =>
   s.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
 
 function extractTDs(tr: string): string[] {
-  return [...tr.matchAll(/<TD[^>]*>([\s\S]*?)<\/TD>/gi)].map((m) => m[1]);
+  // Tolerate unclosed <TD>: each cell runs to its </TD> or, failing that, the next <TD>/end of row.
+  return tr.split(/<TD[^>]*>/i).slice(1).map((c) => c.replace(/<\/TD>[\s\S]*$/i, ''));
 }
 
 function parseYearBlock(block: string): LaserYear {
   const year = /Year\s*(\d{4})/i.exec(block)?.[1] ?? null;
-  const gm = /-\s*([0-9]+)\s*Games/i.exec(block);
+  const gm = /-\s*([0-9]+)\s*Games?/i.exec(block);
   const sm = /Year\s*\d{4}[\s\S]*?<TD[^>]*CLASS="LASERTAG_TD_BACKGROUND_3"[^>]*>([\s\S]*?)<\/TD>/i.exec(block);
   const months: LaserMonth[] = [];
   let current: LaserMonth | null = null;
-  for (const m of block.matchAll(/<TR>([\s\S]*?)<\/TR>/gi)) {
+  for (const m of block.matchAll(/<TR>((?:(?!<TR>)[\s\S])*?)(?:<\/TR>|(?=<TR>)|$)/gi)) {
     const tds = extractTDs(m[1]);
     if (tds.length === 1 && /<B>/i.test(tds[0])) {
       current = { month: stripTags(tds[0]), events: [] };
@@ -35,7 +36,14 @@ function parseYearBlock(block: string): LaserYear {
       continue;
     }
     if (tds.length >= 1 && /<B>\s*Date\s*<\/B>/i.test(tds[0])) continue;
-    if (tds.length >= 4) {
+    // Second game under a ROWSPAN="2" date has only 3 cells: reuse the previous date.
+    let cells = tds;
+    if (tds.length === 3 && current && current.events.length) {
+      cells = [current.events[current.events.length - 1].date, ...tds];
+    }
+    if (cells.length >= 4) {
+      if (cells.slice(0, 4).every((c) => /^\s*None\s*$/i.test(stripTags(c)))) continue;
+      const tds = cells;
       const note = /<FONT[^>]*COLOR=["']red["'][^>]*>([\s\S]*?)<\/FONT>/i.exec(tds[2]);
       const cm = /\{\s*(\d+)\s*\}/.exec(tds[3]);
       const pics = [...tds[3].matchAll(/<A[^>]*>(Pic\s*\d+)<\/A>/gi)].map((p) => stripTags(p[1]));
@@ -51,7 +59,9 @@ function parseYearBlock(block: string): LaserYear {
       });
     }
   }
-  return { year, gamesCount: gm ? parseInt(gm[1], 10) : null, summary: sm ? stripTags(sm[1]) : '', months };
+  // Count the games actually listed: the old page's year headers are stale.
+  const listed = months.reduce((n, mo) => n + mo.events.length, 0);
+  return { year, gamesCount: listed || (gm ? parseInt(gm[1], 10) : null), summary: sm ? stripTags(sm[1]) : '', months: months.filter((mo) => mo.events.length) };
 }
 
 @Component({

@@ -44,7 +44,7 @@ export const SITE_CONFIG: SiteConfig = {
 
   activities: {
     heading: 'Activities', subheading: 'Beyond the screen', items: [
-      { icon: '🔫', title: 'Laser Tag', description: 'Outdoor team battles.', details: [ 'Laser tag active 2000–2003', 'Two original teams: Laser Commandos and Nod Laser Challenge', 'Social meetups and post-match LAN nights through 2006' ], imagePath: 'assets/images/activities/laser-tag.svg' },
+      { icon: '🔫', title: 'Laser Tag', description: 'Outdoor team battles.', details: [ 'Laser tag active 2000–2004', 'Two original teams: Laser Commandos and Nod Laser Challenge', 'Social meetups and post-match LAN nights through 2006' ], imagePath: 'assets/images/activities/laser-tag.svg' },
       { icon: '🎯', title: 'Airsoft', description: 'Field events and community skirmishes during the Iron Raptor era (2007–2009).', details: [ 'Organized Iron Raptor airsoft events', 'Active 2007–2009', 'Events: Field Day 2007, Skirmish at Ridge 2008' ], imagePath: 'assets/images/activities/airsoft-1.svg' },
       { icon: '🗺️', title: 'Geocaching', description: 'Puzzle caches and hikes.', imagePath: 'assets/images/activities/geocaching.svg', routerLink: '/activities/geocaching' },
       { icon: '🚴', title: 'Bicycling', description: 'Group rides.', imagePath: 'assets/images/activities/biking.svg' }
@@ -55,7 +55,7 @@ export const SITE_CONFIG: SiteConfig = {
 
   history: [
     { year: 'Sep 2000', title: 'First Battle', description: "Two rival laser tag crews met for the first time — our first game together.", tags: ['Laser Tag'] },
-    { year: '2000–2006', title: 'Pre‑Iron Raptor', description: 'Played laser tag (2000–2003); LAN parties and social meetups continued through 2006.', tags: ['Laser Tag','LAN'] },
+    { year: '2000–2006', title: 'Pre‑Iron Raptor', description: 'Played laser tag (2000–2004); LAN parties and social meetups continued through 2006.', tags: ['Laser Tag','LAN'] },
     { year: '2001–2009', title: 'LAN Parties Era', description: 'Regular LAN nights with full setups and rotating titles.', tags: ['LAN'] },
     { year: '2007', title: 'Iron Raptor Founded', description: 'The group adopted the Iron Raptor name and began organizing under that banner.', tags: ['Founding'] },
     { year: '2007–2009', title: 'Airsoft Era', description: 'Iron Raptor took to the fields — organized airsoft events and community skirmishes.', tags: ['Airsoft'] },

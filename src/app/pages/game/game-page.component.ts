@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
 interface GameLine { text: string; href?: string; note?: string }
@@ -19,19 +20,27 @@ export class GamePageComponent {
   state = signal<'loading' | 'ready' | 'missing'>('loading');
 
   constructor() {
-    const slug = inject(ActivatedRoute).snapshot.paramMap.get('slug') ?? '';
-    this.load(slug);
+    inject(ActivatedRoute).paramMap
+      .pipe(takeUntilDestroyed())
+      .subscribe((p) => this.load(p.get('slug') ?? ''));
   }
 
+  private seq = 0;
+
   private async load(slug: string): Promise<void> {
+    const id = ++this.seq;
+    this.game.set(null);
+    this.state.set('loading');
     try {
       if (!/^[a-z0-9-]+$/.test(slug)) throw new Error('bad slug');
       const res = await fetch(`/assets/data/games/${slug}.json`);
       if (!res.ok) throw new Error('not found');
-      this.game.set(await res.json());
+      const data = await res.json();
+      if (id !== this.seq) return;
+      this.game.set(data);
       this.state.set('ready');
     } catch {
-      this.state.set('missing');
+      if (id === this.seq) this.state.set('missing');
     }
   }
 }
