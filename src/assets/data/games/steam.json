@@ -1,0 +1,79 @@
+{
+  "slug": "steam",
+  "title": "Steam",
+  "icon": "🔗",
+  "summary": "Our Steam community group and the games we group up in.",
+  "sections": [
+    {
+      "heading": "Group",
+      "lines": [
+        {
+          "text": "Iron Raptor Steam group",
+          "href": "http://steamcommunity.com/groups/ironraptor"
+        }
+      ]
+    },
+    {
+      "heading": "Games",
+      "lines": [
+        {
+          "text": "Borderlands 2",
+          "href": "http://store.steampowered.com/app/49520/"
+        },
+        {
+          "text": "Dota 2",
+          "href": "http://store.steampowered.com/app/570/"
+        },
+        {
+          "text": "Dungeon Defenders",
+          "href": "http://store.steampowered.com/app/65800/"
+        }
+      ]
+    },
+    {
+      "heading": "Main members",
+      "lines": [
+        {
+          "text": "BaronAaron",
+          "href": "http://steamcommunity.com/id/baronaaron"
+        },
+        {
+          "text": "BobDole",
+          "href": "http://steamcommunity.com/id/bobdole123"
+        },
+        {
+          "text": "Dexter000069",
+          "href": "http://steamcommunity.com/id/Dexter000069"
+        },
+        {
+          "text": "Edman",
+          "href": "http://steamcommunity.com/profiles/76561197983951935"
+        },
+        {
+          "text": "KhanJal",
+          "href": "http://steamcommunity.com/id/khanjal"
+        },
+        {
+          "text": "Killerjello912",
+          "href": "http://steamcommunity.com/id/killerjello912"
+        },
+        {
+          "text": "Leguvan",
+          "href": "http://steamcommunity.com/profiles/76561197993158298"
+        },
+        {
+          "text": "Lshadow",
+          "href": "http://steamcommunity.com/profiles/76561197984850795"
+        },
+        {
+          "text": "Lysandus",
+          "href": "http://steamcommunity.com/profiles/76561197970488032"
+        },
+        {
+          "text": "theduddha2",
+          "href": "http://steamcommunity.com/profiles/76561197998241071"
+        }
+      ]
+    }
+  ]
+}

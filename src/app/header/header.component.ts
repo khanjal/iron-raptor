@@ -1,12 +1,11 @@
 import { Component, HostListener, inject, signal } from '@angular/core';
 import { SITE_CONFIG } from '../site.config';
-import { ThemeService } from '../shared/services/theme.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
@@ -15,7 +14,6 @@ export class HeaderComponent {
   mobileOpen = signal(false);
   openDropdown = signal<string | null>(null);
 
-  theme = inject(ThemeService);
   private router = inject(Router);
 
   toggleMobile() {
@@ -25,6 +23,20 @@ export class HeaderComponent {
   toggleDropdown(event: Event, label: string) {
     event.stopPropagation();
     this.openDropdown.set(this.openDropdown() === label ? null : label);
+  }
+
+  linkFor(item: { routerLink?: string }) {
+    return item.routerLink ?? '/';
+  }
+
+  closeMenus() {
+    this.mobileOpen.set(false);
+    this.openDropdown.set(null);
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape() {
+    this.closeMenus();
   }
 
   navClick(event: Event, item: { fragment?: string; routerLink?: string; externalUrl?: string }) {

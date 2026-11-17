@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:gh-pages": "ng build --configuration production --base-href /",
+    "build:gh-pages": "ng build --configuration production --base-href / && node -e \"const fs=require('fs');const d='dist/iron-raptor/browser/';fs.copyFileSync(d+'index.html',d+'404.html')\"",
     "deploy": "npm run build:gh-pages && npx angular-cli-ghpages --dir=dist/iron-raptor/browser",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"

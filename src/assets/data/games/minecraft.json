@@ -1,0 +1,50 @@
+{
+  "slug": "minecraft",
+  "title": "Minecraft",
+  "icon": "⛏️",
+  "summary": "Community Minecraft servers behind one hub, with a live map and a survival guide.",
+  "sections": [
+    {
+      "heading": "Servers",
+      "lines": [
+        {
+          "text": "mc.ironraptor.com",
+          "note": "Main"
+        },
+        {
+          "text": "hub.ironraptor.com",
+          "note": "Hub"
+        },
+        {
+          "text": "elite.ironraptor.com",
+          "note": "Elite"
+        }
+      ]
+    },
+    {
+      "heading": "Resources",
+      "lines": [
+        {
+          "text": "Survival Guide",
+          "href": "https://docs.google.com/document/d/11geebDHRw1bBXOEcPdHeTAPeOiliPFyLfV6aWvakhbo/edit?hl=en_US",
+          "note": "Important information about the server"
+        },
+        {
+          "text": "Dynmap",
+          "href": "http://mc.ironraptor.com/dynmap/",
+          "note": "Live map of the server worlds"
+        },
+        {
+          "text": "permissions.yml",
+          "href": "http://mc.ironraptor.com:25562/permissions.yml",
+          "note": "See your permissions and other groups"
+        },
+        {
+          "text": "Discord",
+          "href": "https://discord.gg/67kJuw7",
+          "note": "Voice chat with Iron Raptor"
+        }
+      ]
+    }
+  ]
+}

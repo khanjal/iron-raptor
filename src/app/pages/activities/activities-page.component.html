@@ -36,22 +36,22 @@
               <div class="mt-4 flex gap-3">
                 <a [routerLink]="'/laser-games'" class="btn btn-primary">View game log</a>
                 @if (item.routerLink) {
-                  <button type="button" class="btn btn-outline" (click)="openInline(item)">{{ openInlineSlug() === slugFor(item) ? 'Hide' : 'Open page' }}</button>
+                  <button type="button" class="btn btn-secondary" (click)="openInline(item)">{{ openInlineSlug() === slugFor(item) ? 'Hide' : 'Open page' }}</button>
                 } @else if (item.externalUrl) {
-                  <button type="button" class="btn btn-outline" (click)="openExternal(item.externalUrl)">Open page</button>
+                  <button type="button" class="btn btn-secondary" (click)="openExternal(item.externalUrl)">Open page</button>
                 }
               </div>
             } @else if (item.routerLink) {
               <div class="mt-4 flex gap-3">
-                <button type="button" class="btn btn-outline" (click)="openInline(item)">{{ openInlineSlug() === slugFor(item) ? 'Hide' : 'Open page' }}</button>
+                <button type="button" class="btn btn-secondary" (click)="openInline(item)">{{ openInlineSlug() === slugFor(item) ? 'Hide' : 'Open page' }}</button>
               </div>
             } @else if (item.externalUrl) {
               <div class="mt-4 flex gap-3">
-                <button type="button" class="btn btn-outline" (click)="openExternal(item.externalUrl)">Open page</button>
+                <button type="button" class="btn btn-secondary" (click)="openExternal(item.externalUrl)">Open page</button>
               </div>
             }
             @if (openInlineSlug() === slugFor(item)) {
-              <div class="card mt-3 prose max-w-none">
+              <div class="card mt-3 imported">
                 @if (loadingInline()) {
                   <p>Loading...</p>
                 } @else {

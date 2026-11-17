@@ -1,0 +1,66 @@
+{
+  "slug": "diablo-3",
+  "title": "Diablo 3",
+  "icon": "😈",
+  "summary": "Our Diablo 3 clan and player profiles.",
+  "sections": [
+    {
+      "heading": "Clan",
+      "lines": [
+        {
+          "text": "[IR] Iron Raptor",
+          "note": "Leader: Lysandus"
+        }
+      ]
+    },
+    {
+      "heading": "Profiles",
+      "lines": [
+        {
+          "text": "Arieanna",
+          "href": "http://us.battle.net/d3/en/profile/Gretel-1756/"
+        },
+        {
+          "text": "BaronAaron",
+          "href": "http://us.battle.net/d3/en/profile/BaronAaron-1191/"
+        },
+        {
+          "text": "Brandoooonwt",
+          "href": "http://us.battle.net/d3/en/profile/Brandoooonwt-1547/"
+        },
+        {
+          "text": "Dexter000069",
+          "href": "http://us.battle.net/d3/en/profile/Dexter000069-1277/"
+        },
+        {
+          "text": "Edman",
+          "href": "http://us.battle.net/d3/en/profile/Peltor-1414/"
+        },
+        {
+          "text": "Khan Jal",
+          "href": "http://us.battle.net/d3/en/profile/KhanJal-1335/"
+        },
+        {
+          "text": "Ksilver",
+          "href": "http://us.battle.net/d3/en/profile/Ksilver-1351/"
+        },
+        {
+          "text": "Lysandus",
+          "href": "http://us.battle.net/d3/en/profile/Lysandus-1523/"
+        },
+        {
+          "text": "Lshadow",
+          "href": "http://us.battle.net/d3/en/profile/LShadow-1451/"
+        },
+        {
+          "text": "ShiftStealth",
+          "href": "http://us.battle.net/d3/en/profile/Shiftstealth-1376/"
+        },
+        {
+          "text": "TheDuddha",
+          "href": "http://us.battle.net/d3/en/profile/theduddha-1699/"
+        }
+      ]
+    }
+  ]
+}

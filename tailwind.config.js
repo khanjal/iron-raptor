@@ -1,77 +1,47 @@
 const { fontFamily } = require('tailwindcss/defaultTheme');
 
+// Colours are defined once as CSS variables (RGB channels) in src/styles.scss
+// and referenced here so Tailwind opacity modifiers (bg-accent/10) keep working.
+const c = (name) => `rgb(var(--${name}) / <alpha-value>)`;
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    './src/**/*.{html,ts}',
-  ],
-  // Uses html.theme-dark class — set by ThemeService
-  darkMode: ['class', 'html.theme-dark'],
+  content: ['./src/**/*.{html,ts}'],
   theme: {
     extend: {
       colors: {
-        primary: {
-          DEFAULT: '#111111',
-          dark: '#080808',
-          light: '#1A1A1A',
-        },
-        secondary: {
-          DEFAULT: '#1E1E1E',
-          dark: '#141414',
-          light: '#2A2A2A',
-        },
-        accent: {
-          DEFAULT: '#00D9FF',
-          cyan: '#00D9FF',
-          blue: '#4D94FF',
-          purple: '#B968C7',
-          green: '#50FA7B',
-        },
+        primary:   { DEFAULT: c('bg'), dark: c('bg-deep'), light: c('surface') },
+        secondary: { DEFAULT: c('surface'), dark: c('bg-deep'), light: c('surface-2') },
+        steel:     { DEFAULT: c('border'), light: c('border-light') },
+        accent:    { DEFAULT: c('accent'), hover: c('accent-hover') },
         text: {
-          primary: '#F8F8F2',
-          secondary: '#B2B2B2',
-          muted: '#6D6D6D',
-          code: '#50FA7B',
+          primary:   c('text'),
+          secondary: c('text-2'),
+          muted:     c('text-muted'),
         },
       },
       fontFamily: {
-        sans: ['Inter', ...fontFamily.sans],
-        mono: ['Fira Code', 'Monaco', 'Consolas', 'monospace'],
+        sans:    ['Inter', ...fontFamily.sans],
+        display: ['Rajdhani', 'Inter', ...fontFamily.sans],
+        mono:    ['Fira Code', 'Consolas', 'monospace'],
       },
       fontSize: {
-        'display-xl': ['4.5rem', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
-        'display-lg': ['3.5rem', { lineHeight: '1.2', letterSpacing: '-0.02em' }],
-        'display-md': ['2.5rem', { lineHeight: '1.3', letterSpacing: '-0.01em' }],
-      },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-primary': 'linear-gradient(135deg, #111111 0%, #080808 100%)',
-        'gradient-accent': 'linear-gradient(135deg, #00D9FF 0%, #4D94FF 100%)',
+        'display-xl': ['4.5rem', { lineHeight: '1.05', letterSpacing: '0.01em' }],
+        'display-lg': ['3rem',   { lineHeight: '1.1',  letterSpacing: '0.01em' }],
+        'display-md': ['2.25rem', { lineHeight: '1.2' }],
       },
       boxShadow: {
-        'glow-sm': '0 0 10px rgba(0, 217, 255, 0.3)',
-        'glow': '0 0 20px rgba(0, 217, 255, 0.4)',
-        'glow-lg': '0 0 30px rgba(0, 217, 255, 0.5)',
-        'card': '0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3)',
+        'glow-sm': '0 0 10px rgb(var(--accent) / 0.25)',
+        'glow':    '0 0 20px rgb(var(--accent) / 0.35)',
+        'card':    '0 4px 12px rgba(0, 0, 0, 0.45)',
       },
       animation: {
-        'fade-in': 'fadeIn 0.6s ease-in',
+        'fade-in':  'fadeIn 0.6s ease-in',
         'slide-up': 'slideUp 0.6s ease-out',
-        'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
       },
       keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-        slideUp: {
-          '0%': { transform: 'translateY(24px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
-        },
-        pulseGlow: {
-          '0%, 100%': { boxShadow: '0 0 10px rgba(0, 217, 255, 0.3)' },
-          '50%': { boxShadow: '0 0 25px rgba(0, 217, 255, 0.6)' },
-        },
+        fadeIn:  { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+        slideUp: { '0%': { transform: 'translateY(24px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
       },
     },
   },

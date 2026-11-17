@@ -1,6 +1,6 @@
+import { cleanImportedHtml } from '../../shared/utils/clean-html';
 import { Component, signal, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { SITE_CONFIG } from '../../site.config';
 
 @Component({
@@ -14,10 +14,8 @@ export class ActivitiesPageComponent implements OnInit {
   config = SITE_CONFIG;
   activities = SITE_CONFIG.activities?.items ?? [];
   openInlineSlug = signal<string | null>(null);
-  inlineContent: { [slug: string]: SafeHtml } = {};
+  inlineContent: { [slug: string]: string } = {};
   loadingInline = signal(false);
-
-  constructor(private sanitizer: DomSanitizer) {}
 
   openExternal(url: string | undefined) {
     if (!url) return;
@@ -40,10 +38,11 @@ export class ActivitiesPageComponent implements OnInit {
       this.loadingInline.set(true);
       try {
         const res = await fetch(`/assets/data/${slug}.html`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const html = await res.text();
-        this.inlineContent[slug] = this.sanitizer.bypassSecurityTrustHtml(html);
+        this.inlineContent[slug] = cleanImportedHtml(html);
       } catch (err) {
-        this.inlineContent[slug] = this.sanitizer.bypassSecurityTrustHtml('<p class="text-text-secondary">Could not load page.</p>');
+        this.inlineContent[slug] = '<p class="text-text-secondary">Could not load page.</p>';
       } finally {
         this.loadingInline.set(false);
       }

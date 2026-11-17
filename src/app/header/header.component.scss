@@ -1,8 +1,6 @@
-:host {
-  display: contents;
-}
+:host { display: contents; }
 
 .header-bar {
-  background-color: color-mix(in srgb, var(--color-surface) 85%, transparent);
+  background-color: color-mix(in srgb, var(--color-bg) 88%, transparent);
   border-color: var(--color-border);
 }

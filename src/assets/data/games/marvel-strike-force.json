@@ -1,0 +1,23 @@
+{
+  "slug": "marvel-strike-force",
+  "title": "Marvel Strike Force",
+  "icon": "🦸",
+  "summary": "Alliance resources for Marvel Strike Force.",
+  "sections": [
+    {
+      "heading": "Resources",
+      "lines": [
+        {
+          "text": "Discord",
+          "href": "https://discord.gg/67kJuw7",
+          "note": "Alliance chat"
+        },
+        {
+          "text": "Spreadsheet",
+          "href": "https://docs.google.com/spreadsheets/d/1QkKW_1B2ZUhqjfS3PCT6OxAvCsaX3Yo9GATiCvEkeVU/",
+          "note": "Alliance tracking sheet"
+        }
+      ]
+    }
+  ]
+}

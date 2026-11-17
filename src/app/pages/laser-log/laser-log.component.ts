@@ -1,5 +1,5 @@
+import { cleanImportedHtml } from '../../shared/utils/clean-html';
 import { Component, OnInit } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { SITE_CONFIG } from '../../site.config';
 
@@ -11,18 +11,17 @@ import { SITE_CONFIG } from '../../site.config';
   styleUrls: ['./laser-log.component.scss'],
 })
 export class LaserLogComponent implements OnInit {
-  content: SafeHtml | null = null;
+  content: string | null = null;
   config = SITE_CONFIG;
-
-  constructor(private sanitizer: DomSanitizer) {}
 
   async ngOnInit(): Promise<void> {
     try {
       const res = await fetch('/assets/data/lasercommandos_games.html');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const html = await res.text();
-      this.content = this.sanitizer.bypassSecurityTrustHtml(html);
+      this.content = cleanImportedHtml(html);
     } catch (err) {
-      this.content = this.sanitizer.bypassSecurityTrustHtml('<p class="text-text-secondary">Could not load laser log.</p>');
+      this.content = '<p class="text-text-secondary">Could not load laser log.</p>';
     }
   }
 }

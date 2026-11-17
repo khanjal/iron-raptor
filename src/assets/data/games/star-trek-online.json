@@ -1,0 +1,42 @@
+{
+  "slug": "star-trek-online",
+  "title": "Star Trek Online",
+  "icon": "🖖",
+  "summary": "The Iron Raptor fleet in Star Trek Online.",
+  "sections": [
+    {
+      "heading": "Fleet",
+      "lines": [
+        {
+          "text": "Fleet: Iron Raptor"
+        },
+        {
+          "text": "Fleet level 4"
+        },
+        {
+          "text": "Starbase tier 1"
+        },
+        {
+          "text": "Dilithium mine, spire and embassy: tier 0"
+        }
+      ]
+    },
+    {
+      "heading": "Captains",
+      "lines": [
+        {
+          "text": "Two@khanjal"
+        },
+        {
+          "text": "ksilver@clansilver"
+        },
+        {
+          "text": "lshadow@lshad82"
+        },
+        {
+          "text": "lysandus@Lysandus"
+        }
+      ]
+    }
+  ]
+}

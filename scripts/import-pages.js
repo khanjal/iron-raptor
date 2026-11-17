@@ -7,8 +7,6 @@ const path = require('path');
 
 const PAGES = [
   { slug: 'geocaching', url: 'https://www.ironraptor.com/activities/geocaching/' , outHtml: path.join(process.cwd(), 'src', 'assets', 'data', 'geocaching.html'), outImgDir: path.join(process.cwd(), 'src', 'assets', 'images', 'activities', 'geocaching') },
-  { slug: 'steam', url: 'https://www.ironraptor.com/games/steam/' , outHtml: path.join(process.cwd(), 'src', 'assets', 'data', 'steam.html'), outImgDir: path.join(process.cwd(), 'src', 'assets', 'images', 'games', 'steam') },
-  { slug: 'minecraft', url: 'https://www.ironraptor.com/games/minecraft/' , outHtml: path.join(process.cwd(), 'src', 'assets', 'data', 'minecraft.html'), outImgDir: path.join(process.cwd(), 'src', 'assets', 'images', 'games', 'minecraft') },
 ];
 
 async function ensureDir(dir) { await fs.promises.mkdir(dir, { recursive: true }); }
@@ -38,12 +36,6 @@ function sanitizeHtml(html, slug) {
 
   // Remove inline event handlers and meta-refresh
   html = html.replace(/<meta[^>]*http-equiv=[\"']refresh[\"'][^>]*>/gi, '');
-
-  // For Minecraft page, remove any vote/poll sections
-  if (slug === 'minecraft') {
-    html = html.replace(/<[^>]*\b(id|class)=[\"'][^\"']*vote[^\"']*[\"'][^>]*>[\s\S]*?<\/[^>]+>/gi, '');
-    html = html.replace(/<[^>]*>\s*Vote[\s\S]*?<\/[^>]+>/gi, '');
-  }
 
   return html;
 }

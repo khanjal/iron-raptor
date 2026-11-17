@@ -1,58 +1,46 @@
 <header id="top" class="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg border-b header-bar">
-  <nav class="container-custom py-4">
+  <nav class="container-custom py-3">
     <div class="flex justify-between items-center">
 
-      <!-- Logo / Business Name -->
       <a href="/" (click)="navClick($event, { fragment: 'top' })"
-         class="text-xl font-bold gradient-text hover:scale-105 transition-transform">
+         class="font-display text-2xl font-bold tracking-wider uppercase text-accent hover:text-accent-hover">
         {{ config.business.name }}
       </a>
 
-      <!-- Desktop Nav + actions -->
-      <div class="hidden md:flex gap-8 items-center">
+      <!-- Desktop nav -->
+      <div class="hidden md:flex gap-7 items-center">
         @for (item of config.nav; track item.label) {
           <div class="relative">
             @if (item.children && item.children.length) {
               <button (click)="toggleDropdown($event, item.label)"
+                      aria-haspopup="true" [attr.aria-expanded]="openDropdown() === item.label"
                       class="flex items-center gap-1 text-secondary hover:text-accent font-medium transition-colors"
                       type="button">
                 {{ item.label }}
-                <svg class="w-4 h-4 transition-transform"
-                     [class.rotate-180]="openDropdown() === item.label"
+                <svg class="w-4 h-4 transition-transform" [class.rotate-180]="openDropdown() === item.label"
                      fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                 </svg>
               </button>
               @if (openDropdown() === item.label) {
                 <div (click)="$event.stopPropagation()"
-                     class="absolute top-full left-1/2 -translate-x-1/2 mt-2 min-w-[180px] bg-surface border border-soft rounded-xl shadow-glow py-2 z-50">
-                  <a (click)="navClick($event, item)" href="#"
-                     class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-accent hover:bg-accent/10 transition-colors cursor-pointer">
+                     class="absolute top-full left-1/2 -translate-x-1/2 mt-3 min-w-[220px] bg-surface border border-soft rounded-lg shadow-card py-2 z-50">
+                  <a (click)="closeMenus()" [routerLink]="linkFor(item)" [fragment]="item.fragment"
+                     class="block px-4 py-2 text-sm font-semibold text-accent hover:bg-accent/10 cursor-pointer">
                     All {{ item.label }}
                   </a>
                   <div class="border-t border-soft my-1"></div>
                   @for (child of item.children; track child.label) {
-                    <button (click)="navClick($event, item)"
-                            class="flex items-center gap-2 px-4 py-2 text-sm text-text-secondary hover:text-accent hover:bg-accent/5 w-full text-left transition-colors"
-                            type="button">
+                    <a (click)="closeMenus()" [routerLink]="linkFor(child)" [fragment]="child.fragment"
+                       class="flex items-center gap-2 px-4 py-2 text-sm text-secondary hover:text-accent hover:bg-accent/5 cursor-pointer">
                       @if (child.icon) { <span>{{ child.icon }}</span> }
                       {{ child.label }}
-                    </button>
+                    </a>
                   }
                 </div>
               }
-            } @else if (item.externalUrl) {
-              <a [href]="item.externalUrl" target="_blank" rel="noopener noreferrer"
-                 class="text-secondary hover:text-accent font-medium transition-colors">
-                {{ item.label }}
-              </a>
-            } @else if (item.routerLink) {
-              <a (click)="navClick($event, item)" href="#"
-                 class="text-secondary hover:text-accent font-medium transition-colors cursor-pointer">
-                {{ item.label }}
-              </a>
             } @else {
-              <a (click)="navClick($event, item)" href="#"
+              <a (click)="closeMenus()" [routerLink]="linkFor(item)" [fragment]="item.fragment"
                  class="text-secondary hover:text-accent font-medium transition-colors cursor-pointer">
                 {{ item.label }}
               </a>
@@ -60,126 +48,68 @@
           </div>
         }
 
-        <!-- Social icons -->
-        @if (config.social.linkedin || config.social.github || config.social.instagram || config.social.facebook || config.social.steam) {
-          <div class="flex gap-3 pl-4 ml-4 border-l border-soft">
-            @if (config.social.steam) {
-              <a [href]="config.social.steam" target="_blank" rel="noopener noreferrer"
-                 aria-label="Steam Group" class="text-secondary hover:text-accent transition-colors">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.454 1.012H7.54zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.665 0-3.015 1.353-3.015 3.015 0 1.665 1.35 3.015 3.015 3.015 1.663 0 3.015-1.35 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.249 0 2.266 1.014 2.266 2.266 0 1.251-1.017 2.265-2.266 2.265-1.253 0-2.265-1.014-2.265-2.265z"/></svg>
-              </a>
-            }
-            @if (config.social.facebook) {
-              <a [href]="config.social.facebook" target="_blank" rel="noopener noreferrer"
-                 aria-label="Facebook" class="text-secondary hover:text-accent transition-colors">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-              </a>
-            }
-          </div>
+        @if (config.social.discord) {
+          <a [href]="config.social.discord" target="_blank" rel="noopener noreferrer"
+             class="btn btn-primary !py-1.5 !px-4 text-sm">Discord</a>
         }
-
-        <!-- Theme toggle (desktop) -->
-        <button (click)="theme.toggle()"
-                class="btn-ghost ml-1"
-                [attr.aria-label]="theme.resolved === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
-                type="button">
-          @if (theme.resolved === 'dark') {
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 100 10A5 5 0 0012 7z"/>
-            </svg>
-          } @else {
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
-            </svg>
-          }
-        </button>
       </div>
 
-      <!-- Mobile: theme toggle + hamburger -->
-      <div class="md:hidden flex items-center gap-1">
-        <button (click)="theme.toggle()"
-                class="btn-ghost"
-                [attr.aria-label]="theme.resolved === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
-                type="button">
-          @if (theme.resolved === 'dark') {
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M12 7a5 5 0 100 10A5 5 0 0012 7z"/>
-            </svg>
-          } @else {
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
-            </svg>
-          }
-        </button>
-
-        <button (click)="$event.stopPropagation(); toggleMobile()"
-                class="text-accent p-2"
-                [attr.aria-expanded]="mobileOpen()"
-                aria-label="Toggle menu"
-                type="button">
-          @if (!mobileOpen()) {
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-            </svg>
-          } @else {
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-          }
-        </button>
-      </div>
+      <!-- Mobile hamburger -->
+      <button (click)="$event.stopPropagation(); toggleMobile()"
+              class="md:hidden text-accent p-2"
+              [attr.aria-expanded]="mobileOpen()"
+              aria-label="Toggle menu"
+              type="button">
+        @if (!mobileOpen()) {
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        } @else {
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        }
+      </button>
     </div>
 
     <!-- Mobile menu panel -->
     @if (mobileOpen()) {
-      <div (click)="$event.stopPropagation()" class="md:hidden mt-4 border-t border-soft pt-4">
+      <div (click)="$event.stopPropagation()" class="md:hidden mt-3 border-t border-soft pt-3 max-h-[75vh] overflow-y-auto">
         <div class="flex flex-col gap-1">
           @for (item of config.nav; track item.label) {
             @if (item.children && item.children.length) {
               <button (click)="toggleDropdown($event, item.label)"
-                      class="flex items-center justify-between w-full px-2 py-2 text-secondary hover:text-accent transition-colors font-medium"
+                      aria-haspopup="true" [attr.aria-expanded]="openDropdown() === item.label"
+                      class="flex items-center justify-between w-full px-2 py-2 text-secondary hover:text-accent font-medium"
                       type="button">
                 {{ item.label }}
-                <svg class="w-4 h-4 transition-transform"
-                     [class.rotate-180]="openDropdown() === item.label"
+                <svg class="w-4 h-4 transition-transform" [class.rotate-180]="openDropdown() === item.label"
                      fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                 </svg>
               </button>
               @if (openDropdown() === item.label) {
-                <a (click)="navClick($event, item)" href="#"
-                   class="pl-4 py-2 text-sm font-semibold text-accent hover:text-accent/80 transition-colors cursor-pointer">
+                <a (click)="closeMenus()" [routerLink]="linkFor(item)" [fragment]="item.fragment" class="pl-4 py-2 text-sm font-semibold text-accent cursor-pointer">
                   All {{ item.label }}
                 </a>
                 @for (child of item.children; track child.label) {
-                  <button (click)="navClick($event, item)"
-                          class="flex items-center gap-2 pl-6 py-1.5 text-sm text-text-secondary hover:text-accent transition-colors w-full text-left"
-                          type="button">
+                  <a (click)="closeMenus()" [routerLink]="linkFor(child)" [fragment]="child.fragment"
+                     class="flex items-center gap-2 pl-6 py-2 text-sm text-secondary hover:text-accent cursor-pointer">
                     @if (child.icon) { <span>{{ child.icon }}</span> }
                     {{ child.label }}
-                  </button>
+                  </a>
                 }
               }
-            } @else if (item.externalUrl) {
-              <a [href]="item.externalUrl" target="_blank" rel="noopener noreferrer"
-                 class="px-2 py-2 text-secondary hover:text-accent transition-colors font-medium">
-                {{ item.label }}
-              </a>
-            } @else if (item.routerLink) {
-              <a (click)="navClick($event, item)" href="#"
-                 class="px-2 py-2 text-secondary hover:text-accent transition-colors font-medium cursor-pointer">
-                {{ item.label }}
-              </a>
             } @else {
-              <a (click)="navClick($event, item)" href="#"
-                 class="px-2 py-2 text-secondary hover:text-accent transition-colors font-medium cursor-pointer">
+              <a (click)="closeMenus()" [routerLink]="linkFor(item)" [fragment]="item.fragment"
+                 class="px-2 py-2 text-secondary hover:text-accent font-medium cursor-pointer">
                 {{ item.label }}
               </a>
             }
+          }
+          @if (config.social.discord) {
+            <a [href]="config.social.discord" target="_blank" rel="noopener noreferrer"
+               class="btn btn-primary mt-2">Join our Discord</a>
           }
         </div>
       </div>
@@ -188,4 +118,4 @@
 </header>
 
 <!-- Spacer to prevent content from going under fixed header -->
-<div class="h-16"></div>
+<div class="h-14"></div>

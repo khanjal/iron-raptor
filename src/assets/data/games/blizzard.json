@@ -1,0 +1,22 @@
+{
+  "slug": "blizzard",
+  "title": "Blizzard",
+  "icon": "❄️",
+  "summary": "Battle.net tags for the crew, so you can add us and group up.",
+  "sections": [
+    {
+      "heading": "Battle.net tags",
+      "lines": [
+        {
+          "text": "khanjal#1335"
+        },
+        {
+          "text": "lysandus#1523"
+        },
+        {
+          "text": "lshadow#1451"
+        }
+      ]
+    }
+  ]
+}
