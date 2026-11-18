@@ -1,0 +1,39 @@
+<section class="section">
+  <div class="container-custom max-w-3xl">
+
+    @if (game(); as g) {
+      <div class="mb-10">
+        <span class="eyebrow">Games</span>
+        <h1 class="section-title mt-3">{{ g.icon }} {{ g.title }}</h1>
+        <p class="text-secondary mt-6">{{ g.summary }}</p>
+      </div>
+
+      <div class="space-y-6">
+        @for (s of g.sections; track s.heading) {
+          <div class="card">
+            <h2 class="!text-xl mb-3">{{ s.heading }}</h2>
+            <ul class="divide-y divide-[var(--color-border-light)]">
+              @for (l of s.lines; track l.text) {
+                <li class="py-2 flex flex-wrap items-baseline gap-x-3">
+                  @if (l.href) {
+                    <a [href]="l.href" target="_blank" rel="noopener noreferrer" class="font-medium">{{ l.text }}</a>
+                  } @else {
+                    <span class="font-medium text-primary">{{ l.text }}</span>
+                  }
+                  @if (l.note) { <span class="text-secondary text-sm">{{ l.note }}</span> }
+                </li>
+              }
+            </ul>
+          </div>
+        }
+      </div>
+    } @else if (state() === 'missing') {
+      <h1 class="section-title">Game not found</h1>
+      <p class="text-secondary mt-6">We could not find that game page.</p>
+    }
+
+    <div class="mt-10 pt-6 border-t border-soft">
+      <a routerLink="/games" class="btn btn-secondary">All games</a>
+    </div>
+  </div>
+</section>
